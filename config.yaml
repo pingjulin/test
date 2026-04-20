@@ -5,10 +5,41 @@ ipv6: false
 
 dns:
   enable: true
+  ipv6: false
   enhanced-mode: fake-ip
+  default-nameserver:
+    - 223.5.5.5
+    - 223.6.6.6
   nameserver:
+    - https://doh.pub/dns-query
+    - https://dns.alidns.com/dns-query
+  fallback:
     - https://1.1.1.1/dns-query
     - https://dns.google/dns-query
+  direct-nameserver:
+    - system
+  nameserver-policy:
+    "geosite:cn,private":
+      - https://doh.pub/dns-query
+      - https://dns.alidns.com/dns-query
+  fallback-filter:
+    geoip: true
+    geoip-code: CN
+    geosite:
+      - gfw
+    ipcidr:
+      - 240.0.0.0/4
+    domain:
+      - '+.google.com'
+      - '+.youtube.com'
+      - '+.facebook.com'
+      - '+.x.com'
+      - '+.twitter.com'
+      - '+.openai.com'
+      - '+.chatgpt.com'
+      - '+.anthropic.com'
+      - '+.claude.ai'
+      - '+.perplexity.ai'
 
 proxies:
   - name: 🇺🇸 LA
