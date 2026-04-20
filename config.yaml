@@ -1,0 +1,58 @@
+mixed-port: 7890
+mode: rule
+log-level: info
+ipv6: false
+
+dns:
+  enable: true
+  enhanced-mode: fake-ip
+  nameserver:
+    - https://1.1.1.1/dns-query
+    - https://dns.google/dns-query
+
+proxies:
+  - name: 🇺🇸 LA
+    type: wireguard
+    server: 144.202.124.215
+    port: 51820
+    ip: 10.0.0.2
+    private-key: __LA_PRIVATE_KEY__
+    public-key: EVACtmcS+w3cWWGVmkxj1mKeVZ6TYhO5/bNwhVyTwFc=
+    allowed-ips: [0.0.0.0/0]
+    udp: true
+
+  - name: 🇯🇵 Tokyo
+    type: wireguard
+    server: 107.191.53.52
+    port: 51820
+    ip: 10.0.1.2
+    private-key: __TOKYO_PRIVATE_KEY__
+    public-key: iq/5/m1j1Z/N7yYt/D8G6h6bIvVSRK7W+sbh/ErARSU=
+    allowed-ips: [0.0.0.0/0]
+    udp: true
+
+proxy-groups:
+  - name: 🚀 自动
+    type: fallback
+    proxies:
+      - 🇺🇸 LA
+      - 🇯🇵 Tokyo
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+
+  - name: 🤖 AI
+    type: select
+    proxies:
+      - 🇺🇸 LA
+      - 🇯🇵 Tokyo
+      - 🚀 自动
+
+rules:
+  - DOMAIN-SUFFIX,openai.com,🤖 AI
+  - DOMAIN-SUFFIX,chatgpt.com,🤖 AI
+  - DOMAIN-SUFFIX,anthropic.com,🤖 AI
+  - DOMAIN-SUFFIX,claude.ai,🤖 AI
+
+  - RULE-SET,https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/gfw.txt,🚀 自动
+  - GEOIP,CN,DIRECT
+  - MATCH,🚀 自动
