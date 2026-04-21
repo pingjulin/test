@@ -64,7 +64,17 @@ proxies:
 
 proxy-groups:
   - name: 🚀 自动
-    type: fallback
+    type: url-test
+    proxies:
+      - 🇺🇸 LA
+      - 🇯🇵 Tokyo
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 50
+
+  - name: ⚖️ 负载
+    type: load-balance
+    strategy: consistent-hashing
     proxies:
       - 🇺🇸 LA
       - 🇯🇵 Tokyo
@@ -74,16 +84,25 @@ proxy-groups:
   - name: 🤖 AI
     type: select
     proxies:
-      - 🇺🇸 LA
-      - 🇯🇵 Tokyo
       - 🚀 自动
+      - ⚖️ 负载
+      - 🇯🇵 Tokyo
+      - 🇺🇸 LA
+
+rule-providers:
+  gfw:
+    type: http
+    behavior: domain
+    url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/gfw.txt
+    path: ./ruleset/gfw.txt
+    interval: 86400
 
 rules:
   - DOMAIN-SUFFIX,openai.com,🤖 AI
   - DOMAIN-SUFFIX,chatgpt.com,🤖 AI
   - DOMAIN-SUFFIX,anthropic.com,🤖 AI
   - DOMAIN-SUFFIX,claude.ai,🤖 AI
-
-  - RULE-SET,https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/gfw.txt,🚀 自动
+  - DOMAIN-SUFFIX,perplexity.ai,🤖 AI
+  - RULE-SET,gfw,🚀 自动
   - GEOIP,CN,DIRECT
   - MATCH,🚀 自动
