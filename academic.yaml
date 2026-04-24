@@ -1,14 +1,11 @@
 # Academic / Journals / Papers
 payload:
-  - '+.link.springer.com'
+  - '+.springer.com'
   - '+.wiley.com'
-  - '+.onlinelibrary.wiley.com'
   - '+.tandfonline.com'
   - '+.jstor.org'
   - '+.ieee.org'
-  - '+.ieeexplore.ieee.org'
   - '+.acm.org'
-  - '+.dl.acm.org'
   - '+.arxiv.org'
   - '+.biorxiv.org'
   - '+.medrxiv.org'
